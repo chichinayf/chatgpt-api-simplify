@@ -1,5 +1,6 @@
 import html as htmls
 import json
+import os
 import threading
 from datetime import datetime
 
@@ -178,7 +179,13 @@ class MyMainWindow(QtWidgets.QMainWindow):
         language_action.triggered.connect(self.show_language_dialog)
         config_menu.addAction(language_action)
         # 创建一个配置窗口
-        self.settings = QtCore.QSettings("ChatGpt", "ChatGpt")
+        # 获取脚本所在的绝对路径
+        script_path = os.path.abspath(__file__)
+        # 获取脚本所在的目录
+        script_dir = os.path.dirname(script_path)
+        # 获取根目录的路径（假设是上一级目录）
+        root_dir = os.path.dirname(script_dir)
+        self.settings = QtCore.QSettings(f"{root_dir}/ChatGptConfig.ini", QtCore.QSettings.IniFormat)
         self.config_window = ConfigWindow(self.settings)
         # 创建一个语言切换窗口
         self.language_window = LanguageWindow()

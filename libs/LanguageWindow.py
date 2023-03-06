@@ -11,8 +11,13 @@ import babel.messages.pofile
 from babel.messages.mofile import write_mo
 
 LANG_DIR = 'locale'
-
-settings = QtCore.QSettings("ChatGpt", "ChatGpt")
+# 获取脚本所在的绝对路径
+script_path = os.path.abspath(__file__)
+# 获取脚本所在的目录
+script_dir = os.path.dirname(script_path)
+# 获取根目录的路径（假设是上一级目录）
+root_dir = os.path.dirname(script_dir)
+settings = QtCore.QSettings(f"{root_dir}/ChatGptConfig.ini", QtCore.QSettings.IniFormat)
 # 选择的是什么语言
 LANG_CODE = 'zh_CN'
 
