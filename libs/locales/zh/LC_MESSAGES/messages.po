@@ -1,0 +1,52 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "配置"
+msgstr "配置"
+
+msgid "语言"
+msgstr "语言"
+
+msgid "从数据库中获取的数据："
+msgstr "从数据库中获取的数据："
+
+msgid "新增对话"
+msgstr "新增对话"
+
+msgid "发送"
+msgstr "发送"
+
+msgid "删除"
+msgstr "删除"
+
+msgid "刷新"
+msgstr "刷新"
+
+msgid "提示"
+msgstr "提示"
+
+msgid "语言配置"
+msgstr "语言配置"
+
+msgid "语言选择："
+msgstr "语言选择："
+
+msgid "参数配置"
+msgstr "参数配置"
+
+msgid "保存"
+msgstr "保存"
+
+msgid "代理："
+msgstr "代理："
+
+msgid "接口URL："
+msgstr "接口URL："
+
+msgid "接口秘钥："
+msgstr "接口秘钥："
+
+msgid "JSON参数："
+msgstr "JSON参数："

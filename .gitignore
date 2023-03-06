@@ -1,0 +1,6 @@
+dist
+build
+database.db
+main.spec
+chatgpt-api-simplify.spec
+.idea

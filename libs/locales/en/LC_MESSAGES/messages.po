@@ -1,0 +1,50 @@
+msgid "配置"
+msgstr "Configuration"
+
+msgid "语言"
+msgstr "Language"
+
+msgid "从数据库中获取的数据："
+msgstr "Data Retrieved from Database："
+
+msgid "新增对话"
+msgstr "Add Dialogue"
+
+msgid "发送"
+msgstr "Send"
+
+msgid "删除"
+msgstr "Delete"
+
+msgid "刷新"
+msgstr "Refresh"
+
+msgid "提示"
+msgstr "Prompt"
+
+msgid "语言配置"
+msgstr "Language Configuration"
+
+msgid "语言选择："
+msgstr "Language Selection："
+
+msgid "参数配置"
+msgstr "Parameter Configuration"
+
+msgid "保存"
+msgstr "Save"
+
+msgid "保存"
+msgstr "Save"
+
+msgid "代理："
+msgstr "Proxy："
+
+msgid "接口URL："
+msgstr "Interface URL："
+
+msgid "接口秘钥："
+msgstr "Interface Key："
+
+msgid "JSON参数："
+msgstr "JSON Parameters："
