@@ -10,7 +10,7 @@ import os
 import babel.messages.pofile
 from babel.messages.mofile import write_mo
 
-LANG_DIR = 'libs\\locales'
+LANG_DIR = 'locale'
 
 settings = QtCore.QSettings("ChatGpt", "ChatGpt")
 # 选择的是什么语言
