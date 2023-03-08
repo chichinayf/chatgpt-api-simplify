@@ -2,7 +2,7 @@
 
 [Jump To English Version](docs/Readme_en.md)
 
-
+下载网盘（阿里云盘）：https://www.aliyundrive.com/s/5tF1GveTcf5
 
 
 ### 项目启动界面
