@@ -32,6 +32,7 @@ params = {
     # "max_tokens": 4096,
     # "n": 1,
 }
+length = "5"
 now = datetime.now()
 # 将时间格式化为指定格式的字符串
 formatted_time = now.strftime('%Y-%m-%d %H:%M:%S')
@@ -474,12 +475,13 @@ class MyMainWindow(QtWidgets.QMainWindow):
                 "http": f"http://{proxy}",
                 "https": f"http://{proxy}",
             }
-            lens = 0
-            for item in params["messages"]:
-                lens += len(item["content"])
-            if lens > 4000: params["message s"] = [{"role": "user", "content": message}]
+            if length:
+                params["messages"] = params["messages"][(len(params["messages"])-int(length)):len(params["messages"])]
+            else:
+                params = self.get_last_4096(0,message)
             # 发送HTTP请求
             try:
+                json_data = json.dumps(params)
                 response = requests.post(url, data=json_data, headers=headers, proxies=proxies)
                 res = json.loads(response.text)
             except:
@@ -503,6 +505,17 @@ class MyMainWindow(QtWidgets.QMainWindow):
         except Exception as err:
             print(json.dumps(res))
             self.data_error.emit(json.dumps(res))
+
+    # 获取最后的4096个字节
+    def get_last_4096(self,total_length,message):
+        lens = len(json.dumps(params))
+        array_length = len(params["messages"])
+        if lens >= 4096:
+            total_length += 1
+            params["messages"] = params["messages"][total_length:array_length]
+            return self.get_last_4096(total_length,message)
+        else:
+            return params
 
     @QtCore.pyqtSlot(str)
     def error_ui(self, message: str):

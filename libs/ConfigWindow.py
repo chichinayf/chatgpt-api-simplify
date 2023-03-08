@@ -24,17 +24,20 @@ class ConfigWindow(QtWidgets.QDialog):
         self.input_box2 = QLineEdit(self)
         self.input_box3 = QLineEdit(self)
         self.input_box4 = QPlainTextEdit(self)
+        self.input_box5 = QLineEdit(self)
         self.save_button = QPushButton(_("保存"), self)
         self.input_box1.setFixedSize(400, 80)
         self.input_box2.setFixedSize(400, 80)
         self.input_box3.setFixedSize(400, 80)
         self.input_box4.setFixedSize(400, 80)
+        self.input_box5.setFixedSize(400, 80)
         self.save_button.setFixedHeight(100)
         # 设置默认值
         self.input_box1.setText(self.settings.value("proxy", ""))
         self.input_box2.setText(self.settings.value("url", ""))
         self.input_box3.setText(self.settings.value("key", ""))
         self.input_box4.setPlainText(self.settings.value("params", ""))
+        self.input_box5.setText(self.settings.value("length", ""))
 
         # 将输入框和保存按钮放入水平布局
         hbox1 = QHBoxLayout()
@@ -53,12 +56,17 @@ class ConfigWindow(QtWidgets.QDialog):
         hbox4.addWidget(QLabel(_("JSON参数："), self))
         hbox4.addWidget(self.input_box4)
 
+        hbox5 = QHBoxLayout()
+        hbox5.addWidget(QLabel(_("回溯长度："), self))
+        hbox5.addWidget(self.input_box5)
+
         # 竖直
         vbox = QVBoxLayout()
         vbox.addLayout(hbox1)
         vbox.addLayout(hbox2)
         vbox.addLayout(hbox3)
         vbox.addLayout(hbox4)
+        vbox.addLayout(hbox5)
         vbox.addWidget(self.save_button)
         self.setLayout(vbox)
 
@@ -70,10 +78,12 @@ class ConfigWindow(QtWidgets.QDialog):
         input_box2 = self.input_box2.text()
         input_box3 = self.input_box3.text()
         input_box4 = self.input_box4.toPlainText()
+        input_box5 = self.input_box5.text()
         self.settings.setValue("proxy", input_box1)
         self.settings.setValue("url", input_box2)
         self.settings.setValue("key", input_box3)
         self.settings.setValue("params", input_box4)
+        self.settings.setValue("length", input_box5)
         self.get_settings()
         # 关闭窗口
         self.close()
@@ -101,3 +111,8 @@ class ConfigWindow(QtWidgets.QDialog):
             MyMainWindow.params = json.loads(params.replace(",\n}", "\n}"))
         else:
             QtWidgets.QLabel(self.settings.setValue("params", params_))
+        length_ = QtWidgets.QLabel(self.settings.value("length", "")).text()
+        if length_:
+            MyMainWindow.length = length_
+        else:
+            QtWidgets.QLabel(self.settings.setValue("length", MyMainWindow.length))

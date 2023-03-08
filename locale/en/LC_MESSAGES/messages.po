@@ -48,3 +48,6 @@ msgstr "Interface Key："
 
 msgid "JSON参数："
 msgstr "JSON Parameters："
+
+msgid "记忆长度："
+msgstr "Memory Length："

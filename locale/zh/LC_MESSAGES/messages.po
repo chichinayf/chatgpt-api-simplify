@@ -50,3 +50,6 @@ msgstr "接口秘钥："
 
 msgid "JSON参数："
 msgstr "JSON参数："
+
+msgid "记忆长度："
+msgstr "记忆长度："
