@@ -2,8 +2,9 @@
 
 [Jump To English Version](docs/Readme_en.md)
 
-下载网盘（阿里云盘）：https://www.aliyundrive.com/s/5tF1GveTcf5
 
+下载网盘（百度云盘）：https://pan.baidu.com/s/1B80quTQL4lA7p7MzPgOHaA?pwd=666
+密码：6666
 
 ### 项目启动界面
 
