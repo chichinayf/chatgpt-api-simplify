@@ -10,7 +10,7 @@ from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtGui import QMovie
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWidgets import QPlainTextEdit, QVBoxLayout, QWidget, QListWidget, \
-    QDesktopWidget, QPushButton, QHBoxLayout, QAction, QLabel, QMessageBox, QMenu
+    QDesktopWidget, QPushButton, QHBoxLayout, QAction, QLabel, QMessageBox, QMenu, QSizePolicy
 from bs4 import BeautifulSoup
 from pygments import highlight
 from pygments.formatters.html import HtmlFormatter
@@ -196,8 +196,9 @@ class MyMainWindow(QtWidgets.QMainWindow):
         self.language_window = LanguageWindow()
 
         # 创建一个标签，显示从数据库中获取的数据
-        self.data_label = QLabel(_("从数据库中获取的数据："), self)
-        self.data_label.move(10, 50)
+        # self.data_label = QLabel(_("从数据库中获取的数据："), self)
+        # self.data_label.move(10, 50)
+        # self.data_label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
 
         # 在左边新增一个列表选择框
         self.list_widget = QListWidget()
@@ -223,13 +224,11 @@ class MyMainWindow(QtWidgets.QMainWindow):
         # self.text_edit_input1.setFixedWidth(500)
         # self.text_edit_input1.setFixedHeight(700)
         self.web_view = QWebEngineView()
-        self.web_view.setFixedWidth(1200)
         # self.text_edit_input1.setFixedHeight(700)
         self.web_view.loadFinished.connect(self.on_load_finished)
 
         # 新增一个用户发送框
         self.text_edit_input = QPlainTextEdit(self)
-        self.text_edit_input.setFixedWidth(1000)
         self.text_edit_input.setFixedHeight(100)
         self.text_edit_input.installEventFilter(self)
         # 用户输入的问题发送按钮
