@@ -16,7 +16,7 @@ class ConfigWindow(QtWidgets.QDialog):
         super().__init__()
 
         self.setWindowTitle(_('参数配置'))
-        self.setFixedSize(600, 500)
+        self.setFixedSize(600, 600)
         self.settings = settings
         self.get_settings()
         # 创建一个输入框和一个保存按钮
