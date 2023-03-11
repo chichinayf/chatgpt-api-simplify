@@ -1,3 +1,3 @@
 
-pyinstaller --onefile --add-data "locale;locale" main.pyw
+pyinstaller --add-data "locale;locale" main.pyw
 pause
