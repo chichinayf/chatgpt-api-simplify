@@ -51,3 +51,9 @@ msgstr "JSON Parameters："
 
 msgid "记忆长度："
 msgstr "Memory Length："
+
+msgid "搜索："
+msgstr "Search："
+
+msgid "输入搜索的内容:"
+msgstr "Enter text to search:"

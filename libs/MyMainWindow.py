@@ -7,10 +7,11 @@ from time import sleep
 
 import requests
 from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QMovie
-from PyQt5.QtWebEngineWidgets import QWebEngineView
+from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEnginePage
 from PyQt5.QtWidgets import QPlainTextEdit, QVBoxLayout, QWidget, QListWidget, \
-    QDesktopWidget, QPushButton, QHBoxLayout, QAction, QMessageBox, QMenu
+    QDesktopWidget, QPushButton, QHBoxLayout, QAction, QMessageBox, QMenu, QShortcut, QInputDialog, QLineEdit
 from bs4 import BeautifulSoup
 from pygments import highlight
 from pygments.formatters.html import HtmlFormatter
@@ -226,6 +227,12 @@ class MyMainWindow(QtWidgets.QMainWindow):
         self.web_view = QWebEngineView()
         # self.text_edit_input1.setFixedHeight(700)
         self.web_view.loadFinished.connect(self.on_load_finished)
+        # ctrl + f按下后就会调用 show_search_dialog 方法
+        self.shortcut = QShortcut(Qt.CTRL + Qt.Key_F, self.web_view)
+        self.shortcut.activated.connect(self.show_search_dialog)
+
+        self.search_bar = QLineEdit()
+        self.search_bar.returnPressed.connect(self.search)
 
         # 新增一个用户发送框
         self.text_edit_input = QPlainTextEdit(self)
@@ -267,6 +274,17 @@ class MyMainWindow(QtWidgets.QMainWindow):
 
         # 显示初始预览
         self.update_preview()
+
+    def search(self):
+        text = self.search_bar.text()
+        self.web_view.findText(text, QWebEnginePage.FindCaseSensitively)
+
+    def show_search_dialog(self):
+        # 搜索框
+        text, ok = QInputDialog.getText(self, _("搜索"), _("输入搜索的内容:"))
+        if ok and text:
+            self.search_bar.setText(text)
+            self.search()
 
     def closeEvent(self, event):
         self.config_window.close()

@@ -53,3 +53,10 @@ msgstr "JSON参数："
 
 msgid "记忆长度："
 msgstr "记忆长度："
+
+
+msgid "搜索："
+msgstr "搜索："
+
+msgid "输入搜索的内容:"
+msgstr "输入搜索的内容:"
