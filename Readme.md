@@ -3,8 +3,8 @@
 [Jump To English Version](docs/Readme_en.md)
 
 
-下载网盘（百度云盘）：https://pan.baidu.com/s/1xBriu_vquKT47_DcvtBwhw?pwd=a36w
-密码：a36w
+下载网盘（百度云盘）：https://pan.baidu.com/s/1mQFORApctgDrhZ-wLo4QJA?pwd=s9jx
+密码：s9jx
 
 ### 项目启动界面
 
