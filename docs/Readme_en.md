@@ -10,6 +10,9 @@
 ##### locale:Directory containing language files (.po files are language translation files, .mo files are automatically generated files that are only generated when switching languages).
 ### Project Startup Interface
 
+### Install requirements（python3.10）
+##### pip install -r requirements.txt
+
 ![img.png](img.png)
 
 ### Project Configuration Interface

@@ -7,6 +7,9 @@
 ##### libs:函数文件
 ##### locale:语言文件（里面的.po为语言翻译文件,.mo为自动生成的文件，只有当切换语言时会自动生成）
 
+### 安装依赖（python3.10）
+##### pip install -r requirements.txt
+
 ### 项目启动界面
 
 ![img.png](img.png)
