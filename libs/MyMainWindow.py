@@ -3,9 +3,11 @@ import json
 import os
 import threading
 from datetime import datetime
+from time import sleep
 
 import requests
 from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt5.QtGui import QMovie
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWidgets import QPlainTextEdit, QVBoxLayout, QWidget, QListWidget, \
     QDesktopWidget, QPushButton, QHBoxLayout, QAction, QLabel, QMessageBox, QMenu
@@ -157,11 +159,13 @@ all_res_index = {}
 class MyMainWindow(QtWidgets.QMainWindow):
     data_ready = QtCore.pyqtSignal(str, )
     data_error = QtCore.pyqtSignal(str, )
+    data_loading = QtCore.pyqtSignal()
 
     def __init__(self):
         super().__init__()
         self.data_ready.connect(self.update_ui)
         self.data_error.connect(self.error_ui)
+        self.data_loading.connect(self.loading_ui)
         self.setWindowTitle("ChatGpt")
         self.setGeometry(0, 0, 1400, 800)
         self.center()
@@ -215,12 +219,12 @@ class MyMainWindow(QtWidgets.QMainWindow):
         self.text_add_button.clicked.connect(self.send_text_add_button)
 
         # 新增一个webview
-        self.text_edit_input1 = QPlainTextEdit()
-        self.text_edit_input1.setFixedWidth(500)
-        self.text_edit_input1.setFixedHeight(700)
+        # self.text_edit_input1 = QPlainTextEdit()
+        # self.text_edit_input1.setFixedWidth(500)
+        # self.text_edit_input1.setFixedHeight(700)
         self.web_view = QWebEngineView()
-        self.web_view.setFixedWidth(700)
-        self.text_edit_input1.setFixedHeight(700)
+        self.web_view.setFixedWidth(1200)
+        # self.text_edit_input1.setFixedHeight(700)
         self.web_view.loadFinished.connect(self.on_load_finished)
 
         # 新增一个用户发送框
@@ -243,7 +247,7 @@ class MyMainWindow(QtWidgets.QMainWindow):
         vBox.addWidget(self.text_add_button)
         hBox0 = QHBoxLayout()
         hBox0.addWidget(self.web_view)
-        hBox0.addWidget(self.text_edit_input1)
+        # hBox0.addWidget(self.text_edit_input1)
         hBox1 = QHBoxLayout()
         hBox1.addWidget(self.text_edit_input)
         hBox1.addWidget(self.text_edit_button)
@@ -304,14 +308,29 @@ class MyMainWindow(QtWidgets.QMainWindow):
     # 按下enter按键之后调用
     def eventFilter(self, obj, event):
         if obj == self.text_edit_input and event.type() == QtCore.QEvent.KeyPress:
-            if event.key() == QtCore.Qt.Key_Return or event.key() == QtCore.Qt.Key_Enter:
-                # 在这里执行自定义操作
-                print("Enter key pressed")
-                # 在这里执行你想要的操作
+            if event.key() == QtCore.Qt.Key_Return and (event.modifiers() == QtCore.Qt.AltModifier or event.modifiers() == QtCore.Qt.ControlModifier):
+                # 按下 alt+Enter 进行的操作
+                new_event = QtGui.QKeyEvent(QtCore.QEvent.KeyPress, QtCore.Qt.Key_Enter, QtCore.Qt.NoModifier)
+                QtWidgets.QApplication.postEvent(self.text_edit_input, new_event)
+                return True
+            elif event.key() == QtCore.Qt.Key_Return:
+                # 按下 Enter 进行的操作
                 self.send_message()
-                event.accept()  # 阻止默认的关闭事件
                 return True
         return super().eventFilter(obj, event)
+        # if obj == self.text_edit_input and event.type() == QtCore.QEvent.KeyPress:
+        #     if event.key() == QtCore.Qt.Key_Return + QtCore.Qt.Key_Alt or event.key() == QtCore.Qt.Key_Enter + QtCore.Qt.Key_Alt:
+        #         # 在这里执行自定义操作
+        #         print("alt+Enter key pressed")
+        #         # event.accept()  # 阻止默认的关闭事件
+        #     elif event.key() == QtCore.Qt.Key_Return or event.key() == QtCore.Qt.Key_Enter:
+        #         # 在这里执行自定义操作
+        #         print("Enter key pressed")
+        #         # 在这里执行你想要的操作
+        #         self.send_message()
+        #         # event.accept()  # 阻止默认的关闭事件
+        #         return True
+        # return super().eventFilter(obj, event)
 
     # 弹出配置窗口
     def show_config_dialog(self):
@@ -389,23 +408,23 @@ class MyMainWindow(QtWidgets.QMainWindow):
         <span style="background-color: blueviolet;padding: 4px;">
             问:
         </span>    
-        <pre style="background-color: darkslategray;padding:5px;border-radius: 10px;overflow: auto;">{row2}</pre>
+        <pre style="background-color: darkslategray;padding:5px;border-radius: 10px;overflow: auto;word-break:break-all;white-space:pre-wrap;">{row2}</pre>
     </div>
     <div>
         <span style="background-color: darkgreen;padding: 4px;">
             答:
         </span>    
-        <pre style="background-color: darkslategray;padding:5px;border-radius: 10px;overflow: auto;">{row3}</pre>
+        <pre style="background-color: darkslategray;padding:5px;border-radius: 10px;overflow: auto;word-break:break-all;white-space:pre-wrap;">{row3}</pre>
     </div>
 </div>
         """
         # 创建一个新线程来发送HTTP请求
         self.web_view.setHtml(self.get_text_html(all_res[self.selectRow[1]]))
-        self.text_edit_input1.setPlainText("".join(all_res_root[self.selectRow[1]]))
-        cursor = self.text_edit_input1.textCursor()
-        cursor.movePosition(QtGui.QTextCursor.End)
-        self.text_edit_input1.setTextCursor(cursor)
-        self.text_edit_input1.ensureCursorVisible()
+        # self.text_edit_input1.setPlainText("".join(all_res_root[self.selectRow[1]]))
+        # cursor = self.text_edit_input1.textCursor()
+        # cursor.movePosition(QtGui.QTextCursor.End)
+        # self.text_edit_input1.setTextCursor(cursor)
+        # self.text_edit_input1.ensureCursorVisible()
 
     # Pygments语法高亮函数
 
@@ -456,6 +475,12 @@ class MyMainWindow(QtWidgets.QMainWindow):
         # 创建一个新线程来发送HTTP请求
         thread = threading.Thread(target=self.send_http_request, args=(message,))
         thread.start()
+        # 创建并启动新线程来显示加载动画
+        # 创建标签窗口和按钮窗口
+        self.text_edit_button.setText("请求数据中...")
+        self.text_edit_button.setDisabled(True)
+        self.text_edit_input.removeEventFilter(self)
+        self.repaint()
 
     def send_http_request(self, message):
         response = None
@@ -505,6 +530,9 @@ class MyMainWindow(QtWidgets.QMainWindow):
         except Exception as err:
             print(json.dumps(res))
             self.data_error.emit(json.dumps(res))
+        self.data_loading.emit()
+
+
 
     # 获取最后的4096个字节
     def get_last_4096(self,total_length,message):
@@ -520,6 +548,13 @@ class MyMainWindow(QtWidgets.QMainWindow):
     @QtCore.pyqtSlot(str)
     def error_ui(self, message: str):
         QMessageBox.information(self, _("提示"), message)
+
+    @QtCore.pyqtSlot()
+    def loading_ui(self):
+        self.text_edit_button.setText("发送")
+        self.text_edit_button.setDisabled(False)
+        self.text_edit_input.installEventFilter(self)
+        self.repaint()
 
     @QtCore.pyqtSlot(str)
     def update_ui(self, message_content: str):
@@ -543,23 +578,46 @@ class MyMainWindow(QtWidgets.QMainWindow):
                 <span style="background-color: blueviolet;padding: 4px;">
                     问:
                 </span>    
-                <pre style="background-color: darkslategray;padding:5px;border-radius: 10px;">{message}</pre>
+                <pre style="background-color: darkslategray;padding:5px;border-radius: 10px;overflow: auto;word-break:break-all;white-space:pre-wrap;">{message}</pre>
             </div>
             <div>
                 <span style="background-color: darkgreen;padding: 4px;">
                     答:
                 </span>    
-                <pre style="background-color: darkslategray;padding:5px;border-radius: 10px;">{content}</pre>
+                <pre style="background-color: darkslategray;padding:5px;border-radius: 10px;overflow: auto;word-break:break-all;white-space:pre-wrap;">{content}</pre>
             </div>
         </div>
         """
         # 创建一个新线程来发送HTTP请求
         self.web_view.setHtml(self.get_text_html(all_res[self.selectRow[1]]))
         self.on_list_item_changed_detail(self.selectRow[1])
-        self.text_edit_input1.setPlainText("".join(all_res_root[self.selectRow[1]]))
-        cursor = self.text_edit_input1.textCursor()
-        cursor.movePosition(QtGui.QTextCursor.End)
-        self.text_edit_input1.setTextCursor(cursor)
-        self.text_edit_input1.ensureCursorVisible()
+        # self.text_edit_input1.setPlainText("".join(all_res_root[self.selectRow[1]]))
+        # cursor = self.text_edit_input1.textCursor()
+        # cursor.movePosition(QtGui.QTextCursor.End)
+        # self.text_edit_input1.setTextCursor(cursor)
+        # self.text_edit_input1.ensureCursorVisible()
         self.text_edit_input.setPlainText("")
         self.repaint()
+
+# 定义一个新线程
+class LoadingThread(threading.Thread):
+    def __init__(self, label):
+        super().__init__()
+        self.label = label
+        self.stopped = False
+
+    def run(self):
+        # 加载动画文件
+        movie = QMovie('loading.gif')
+        self.label.setMovie(movie)
+
+        # 启动动画
+        movie.start()
+
+        # 线程不停止时，保持动画运行
+        while not self.stopped:
+            sleep(0.1)
+
+        # 停止动画并清除标签上的内容
+        movie.stop()
+        self.label.clear()
