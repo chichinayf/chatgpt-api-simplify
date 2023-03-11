@@ -10,7 +10,7 @@ from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtGui import QMovie
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWidgets import QPlainTextEdit, QVBoxLayout, QWidget, QListWidget, \
-    QDesktopWidget, QPushButton, QHBoxLayout, QAction, QLabel, QMessageBox, QMenu, QSizePolicy
+    QDesktopWidget, QPushButton, QHBoxLayout, QAction, QMessageBox, QMenu
 from bs4 import BeautifulSoup
 from pygments import highlight
 from pygments.formatters.html import HtmlFormatter
@@ -159,7 +159,7 @@ all_res_index = {}
 class MyMainWindow(QtWidgets.QMainWindow):
     data_ready = QtCore.pyqtSignal(str, )
     data_error = QtCore.pyqtSignal(str, )
-    data_loading = QtCore.pyqtSignal()
+    data_loading = QtCore.pyqtSignal(bool, )
 
     def __init__(self):
         super().__init__()
@@ -236,7 +236,7 @@ class MyMainWindow(QtWidgets.QMainWindow):
         self.text_edit_button.setText(_("发送"))
         self.text_edit_button.setFixedWidth(200)
         self.text_edit_button.setFixedHeight(100)
-        self.text_edit_button.clicked.connect(self.send_text)
+        self.text_edit_button.clicked.connect(self.send_message)
 
         # 窗口所有的布局
         # 竖直放置
@@ -307,7 +307,8 @@ class MyMainWindow(QtWidgets.QMainWindow):
     # 按下enter按键之后调用
     def eventFilter(self, obj, event):
         if obj == self.text_edit_input and event.type() == QtCore.QEvent.KeyPress:
-            if event.key() == QtCore.Qt.Key_Return and (event.modifiers() == QtCore.Qt.AltModifier or event.modifiers() == QtCore.Qt.ControlModifier):
+            if event.key() == QtCore.Qt.Key_Return and (
+                    event.modifiers() == QtCore.Qt.AltModifier or event.modifiers() == QtCore.Qt.ControlModifier):
                 # 按下 alt+Enter 进行的操作
                 new_event = QtGui.QKeyEvent(QtCore.QEvent.KeyPress, QtCore.Qt.Key_Enter, QtCore.Qt.NoModifier)
                 QtWidgets.QApplication.postEvent(self.text_edit_input, new_event)
@@ -343,11 +344,6 @@ class MyMainWindow(QtWidgets.QMainWindow):
     def on_load_finished(self):
         js_code = "window.scrollTo(0, document.body.scrollHeight);"
         self.web_view.page().runJavaScript(js_code)
-
-    def send_text(self):
-        text = self.text_edit_input.toPlainText()
-        # TODO: 在这里添加将文本发送的代码
-        self.send_http_request(text)
 
     # 新增对话
     def send_text_add_button(self):
@@ -474,14 +470,11 @@ class MyMainWindow(QtWidgets.QMainWindow):
         # 创建一个新线程来发送HTTP请求
         thread = threading.Thread(target=self.send_http_request, args=(message,))
         thread.start()
-        # 创建并启动新线程来显示加载动画
-        # 创建标签窗口和按钮窗口
-        self.text_edit_button.setText("请求数据中...")
-        self.text_edit_button.setDisabled(True)
-        self.text_edit_input.removeEventFilter(self)
-        self.repaint()
 
     def send_http_request(self, message):
+        # 创建并启动新线程来显示加载动画
+        # 创建标签窗口和按钮窗口
+        self.data_loading.emit(False)
         response = None
         res = None
         try:
@@ -500,9 +493,9 @@ class MyMainWindow(QtWidgets.QMainWindow):
                 "https": f"http://{proxy}",
             }
             if length:
-                params["messages"] = params["messages"][(len(params["messages"])-int(length)):len(params["messages"])]
+                params["messages"] = params["messages"][(len(params["messages"]) - int(length)):len(params["messages"])]
             else:
-                params = self.get_last_4096(0,message)
+                params = self.get_last_4096(0, message)
             # 发送HTTP请求
             try:
                 json_data = json.dumps(params)
@@ -529,18 +522,16 @@ class MyMainWindow(QtWidgets.QMainWindow):
         except Exception as err:
             print(json.dumps(res))
             self.data_error.emit(json.dumps(res))
-        self.data_loading.emit()
-
-
+        self.data_loading.emit(True)
 
     # 获取最后的4096个字节
-    def get_last_4096(self,total_length,message):
+    def get_last_4096(self, total_length, message):
         lens = len(json.dumps(params))
         array_length = len(params["messages"])
         if lens >= 4096:
             total_length += 1
             params["messages"] = params["messages"][total_length:array_length]
-            return self.get_last_4096(total_length,message)
+            return self.get_last_4096(total_length, message)
         else:
             return params
 
@@ -548,11 +539,16 @@ class MyMainWindow(QtWidgets.QMainWindow):
     def error_ui(self, message: str):
         QMessageBox.information(self, _("提示"), message)
 
-    @QtCore.pyqtSlot()
-    def loading_ui(self):
-        self.text_edit_button.setText("发送")
-        self.text_edit_button.setDisabled(False)
-        self.text_edit_input.installEventFilter(self)
+    @QtCore.pyqtSlot(bool)
+    def loading_ui(self, close: bool):
+        if close:
+            self.text_edit_button.setText("发送")
+            self.text_edit_button.setDisabled(False)
+            self.text_edit_input.installEventFilter(self)
+        else:
+            self.text_edit_button.setText("请求数据中...")
+            self.text_edit_button.setDisabled(True)
+            self.text_edit_input.removeEventFilter(self)
         self.repaint()
 
     @QtCore.pyqtSlot(str)
@@ -597,6 +593,7 @@ class MyMainWindow(QtWidgets.QMainWindow):
         # self.text_edit_input1.ensureCursorVisible()
         self.text_edit_input.setPlainText("")
         self.repaint()
+
 
 # 定义一个新线程
 class LoadingThread(threading.Thread):
