@@ -1,0 +1,5 @@
+PyQt5~=5.15.9
+requests~=2.21.0
+beautifulsoup4~=4.11.1
+Pygments~=2.14.0
+Babel~=2.12.1
