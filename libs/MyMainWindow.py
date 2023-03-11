@@ -334,7 +334,7 @@ class MyMainWindow(QtWidgets.QMainWindow):
     # 新增对话
     def send_text_add_button(self):
         global formatted_time
-        formatted_time = datetime.now().strftime('%Y年%m月%d日 %H:%M:%S')
+        formatted_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         self.list_widget.addItem(formatted_time)
         self.rows.append(list({1, formatted_time}))
         self.list_widget.setCurrentRow(self.list_widget.count() - 1)
