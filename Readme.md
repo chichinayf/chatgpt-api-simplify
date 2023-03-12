@@ -2,8 +2,8 @@
 
 [Jump To English Version](docs/Readme_en.md)
 
-下载网盘（百度云盘）：https://pan.baidu.com/s/1mQFORApctgDrhZ-wLo4QJA?pwd=s9jx
-密码：s9jx
+下载网盘（百度云盘）：https://pan.baidu.com/s/1o3vJ6Tn9Sc4-n2Ut9YTOPA?pwd=ovwc
+密码：ovwc
 
 ### 项目启动界面
 
