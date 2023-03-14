@@ -326,7 +326,7 @@ class MyMainWindow(QtWidgets.QMainWindow):
     def eventFilter(self, obj, event):
         if obj == self.text_edit_input and event.type() == QtCore.QEvent.KeyPress:
             if event.key() == QtCore.Qt.Key_Return and (
-                    event.modifiers() == QtCore.Qt.AltModifier or event.modifiers() == QtCore.Qt.ControlModifier):
+                    event.modifiers() == QtCore.Qt.AltModifier or event.modifiers() == QtCore.Qt.ControlModifier or event.modifiers() == QtCore.Qt.ShiftModifier):
                 # 按下 alt+Enter 进行的操作
                 new_event = QtGui.QKeyEvent(QtCore.QEvent.KeyPress, QtCore.Qt.Key_Enter, QtCore.Qt.NoModifier)
                 QtWidgets.QApplication.postEvent(self.text_edit_input, new_event)
