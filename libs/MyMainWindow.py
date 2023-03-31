@@ -222,10 +222,8 @@ class MyMainWindow(QtWidgets.QMainWindow):
 
         # 新增一个webview
         self.text_edit_input1 = QPlainTextEdit()
-        # self.text_edit_input1.setFixedWidth(500)
-        # self.text_edit_input1.setFixedHeight(700)
         self.web_view = QWebEngineView()
-        # self.text_edit_input1.setFixedHeight(700)
+        self.web_view.setFixedWidth(0)
         self.web_view.loadFinished.connect(self.on_load_finished)
         # ctrl + f按下后就会调用 show_search_dialog 方法
         self.shortcut = QShortcut(Qt.CTRL + Qt.Key_F, self.web_view)
