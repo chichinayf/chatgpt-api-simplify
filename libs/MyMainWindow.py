@@ -221,7 +221,7 @@ class MyMainWindow(QtWidgets.QMainWindow):
         self.text_add_button.clicked.connect(self.send_text_add_button)
 
         # 新增一个webview
-        # self.text_edit_input1 = QPlainTextEdit()
+        self.text_edit_input1 = QPlainTextEdit()
         # self.text_edit_input1.setFixedWidth(500)
         # self.text_edit_input1.setFixedHeight(700)
         self.web_view = QWebEngineView()
@@ -253,7 +253,7 @@ class MyMainWindow(QtWidgets.QMainWindow):
         vBox.addWidget(self.text_add_button)
         hBox0 = QHBoxLayout()
         hBox0.addWidget(self.web_view)
-        # hBox0.addWidget(self.text_edit_input1)
+        hBox0.addWidget(self.text_edit_input1)
         hBox1 = QHBoxLayout()
         hBox1.addWidget(self.text_edit_input)
         hBox1.addWidget(self.text_edit_button)
@@ -433,11 +433,11 @@ class MyMainWindow(QtWidgets.QMainWindow):
         """
         # 创建一个新线程来发送HTTP请求
         self.web_view.setHtml(self.get_text_html(all_res[self.selectRow[1]]))
-        # self.text_edit_input1.setPlainText("".join(all_res_root[self.selectRow[1]]))
-        # cursor = self.text_edit_input1.textCursor()
-        # cursor.movePosition(QtGui.QTextCursor.End)
-        # self.text_edit_input1.setTextCursor(cursor)
-        # self.text_edit_input1.ensureCursorVisible()
+        self.text_edit_input1.setPlainText("".join(all_res_root[self.selectRow[1]]))
+        cursor = self.text_edit_input1.textCursor()
+        cursor.movePosition(QtGui.QTextCursor.End)
+        self.text_edit_input1.setTextCursor(cursor)
+        self.text_edit_input1.ensureCursorVisible()
 
     # Pygments语法高亮函数
 
@@ -604,11 +604,11 @@ class MyMainWindow(QtWidgets.QMainWindow):
         # 创建一个新线程来发送HTTP请求
         self.web_view.setHtml(self.get_text_html(all_res[self.selectRow[1]]))
         self.on_list_item_changed_detail(self.selectRow[1])
-        # self.text_edit_input1.setPlainText("".join(all_res_root[self.selectRow[1]]))
-        # cursor = self.text_edit_input1.textCursor()
-        # cursor.movePosition(QtGui.QTextCursor.End)
-        # self.text_edit_input1.setTextCursor(cursor)
-        # self.text_edit_input1.ensureCursorVisible()
+        self.text_edit_input1.setPlainText("".join(all_res_root[self.selectRow[1]]))
+        cursor = self.text_edit_input1.textCursor()
+        cursor.movePosition(QtGui.QTextCursor.End)
+        self.text_edit_input1.setTextCursor(cursor)
+        self.text_edit_input1.ensureCursorVisible()
         self.text_edit_input.setPlainText("")
         self.repaint()
 
